@@ -4,9 +4,15 @@ import sys, random
 
 app = Flask('random-word-generator')
 
-@app.route('/')
+
+@app.route('/',methods = ['POST', 'GET'])
 def index():
-    return render_template("index.html", word='random-word-generator', passedConfig='2:2')
+    if request.method == 'POST':
+        config = request.form['config']
+        return redirect(url_for('next_word', config=config))
+    else:
+        config = request.args.get('config')
+        return render_template('index.html', word='random word generator')
 
 @app.route("/next/<config>")
 def next_word(config):
@@ -15,7 +21,7 @@ def next_word(config):
         nC,nS = g.split(':')
         configDict[int(nC)] = int(nS)
     genWord = make_word(SYLLABLES, configDict)
-    return render_template('index.html', word=genWord, passedConfig=config);
+    return render_template('next.html', word=genWord, passedConfig=config);
 
 def make_word(syllables, config):
     selection = []
