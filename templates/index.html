@@ -23,4 +23,8 @@
 
 <div>
     <h1>{{ word }}</h1><br>
+
+    <form action="{{ url_for('next_word', config=passedConfig) }}">
+        <button name="nextBtn">>></button>
+    </form>
 </div>
