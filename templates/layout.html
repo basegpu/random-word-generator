@@ -7,19 +7,36 @@
         font-family: "Rubik", "sans-serif";
     }
 
+    #footer {
+        position: fixed;
+        padding: 1em 1em 0em 1em;
+        bottom: 0;
+        width: 97%; 
+        height: 2em;
+        background: lightsteelblue;
+    }
+
     div {
         text-align: center;
         margin-top: 50px;
     }
 
     h1 {
-        color: red;
+        color: navy;
         font-size: 64pt;
     }
 
     .center {
         margin-left: auto;
         margin-right: auto;
+    }
+
+    .right {
+        float:right;
+    }
+
+    .left {
+        float:left;
     }
 
     #button {
@@ -31,6 +48,16 @@
     }
 </style>
 
-<div>
-    {% block content %}{% endblock %}
-</div>
+<body>
+    <div id = "container">
+        {% block content %}{% endblock %}
+        <div id = "footer">
+            <span class="left">
+                author: Samuel J. Peter
+            </span>
+            <span class="right">
+                source: <a href="https://github.com/basegpu/random-word-generator.git">github</a>
+            </span>
+        </div>
+    </div>
+</body>

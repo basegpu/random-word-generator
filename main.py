@@ -9,6 +9,7 @@ app = Flask('random-word-generator')
 @app.route('/',methods = ['POST', 'GET'])
 def index():
     if request.method == 'POST':
+        #TODO: check validity
         config = request.form['config']
         fadeout = float(request.form['fadeout'])*1000
         capitalize = 'yes' if request.form.get('capitalize') else 'no'
