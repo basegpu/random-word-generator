@@ -1,10 +1,18 @@
 {% extends "layout.html" %}
-{% block forms %}
+{% block content %}
+<h1>random word generator</h1>
+<br>
 <form action = "/" method = "post">
     <p>
         config:
         <input type = "text" name = "config" />
     </p>
-    <p><input type = "submit" value = "start" /></p>
+    <p>
+        visible for:
+        <input type="number" name="fadeout" min="0" max="10" step="0.25" value="0"/>
+    </p>
+    <p>
+        <input type = "submit" value = "start" />
+    </p>
 </form>
 {% endblock %}

@@ -9,19 +9,19 @@ app = Flask('random-word-generator')
 def index():
     if request.method == 'POST':
         config = request.form['config']
-        return redirect(url_for('next_word', config=config))
+        fadeout = float(request.form['fadeout'])*1000
+        return redirect(url_for('next_word', config=config, fadeout=fadeout))
     else:
-        config = request.args.get('config')
-        return render_template('index.html', word='random word generator')
+        return render_template('index.html')
 
-@app.route("/next/<config>")
-def next_word(config):
+@app.route("/next/<config>/<fadeout>")
+def next_word(config, fadeout):
     configDict = {}
     for g in config.split('-'):
         nC,nS = g.split(':')
         configDict[int(nC)] = int(nS)
     genWord = make_word(SYLLABLES, configDict)
-    return render_template('next.html', word=genWord, passedConfig=config);
+    return render_template('word.html', word=genWord, templateConfig=config, templateFadeout=fadeout);
 
 def make_word(syllables, config):
     selection = []

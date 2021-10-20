@@ -1,0 +1,23 @@
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+<script>
+    var fade_out = function() {
+        $("#myWord").fadeOut().empty();
+    }
+    if ({{ templateFadeout }} > 0) {
+        setTimeout(fade_out, {{ templateFadeout }});
+    }
+</script>
+
+{% extends "layout.html" %}
+
+{% block content %}
+<form action="{{ url_for('next_word', config=templateConfig, fadeout=templateFadeout) }}">
+    <button>>></button>
+</form>
+<form action="/">
+    <button>config</button>
+</form>
+<br>
+<h1 id=myWord>{{ word }}</h1>
+{% endblock %}
