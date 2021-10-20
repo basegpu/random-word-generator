@@ -3,16 +3,14 @@
 <h1>random word generator</h1>
 <br>
 <form action = "/" method = "post">
+    <table class="center">
+        <tr><td>config</td><td><input type = "text" name = "config" /></td></tr>
+        <tr><td>visible for</td><td><input type="number" name="fadeout" min="0" max="10" step="0.25" value="0"/></td></tr>
+        <tr><td>make QR code</td><td><input type = "checkbox" name = "qr" /></td></tr>
+    </table>
+    <br>
     <p>
-        config:
-        <input type = "text" name = "config" />
-    </p>
-    <p>
-        visible for:
-        <input type="number" name="fadeout" min="0" max="10" step="0.25" value="0"/>
-    </p>
-    <p>
-        <input type = "submit" value = "start" />
+        <input type = "submit" value = "start"/>
     </p>
 </form>
 {% endblock %}

@@ -1,6 +1,7 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, send_file
 from csv import reader
-import sys, random
+import sys, random, io
+import qrcode
 
 app = Flask('random-word-generator')
 
@@ -10,7 +11,10 @@ def index():
     if request.method == 'POST':
         config = request.form['config']
         fadeout = float(request.form['fadeout'])*1000
-        return redirect(url_for('next_word', config=config, fadeout=fadeout))
+        page = 'make_code' if request.form.get('qr') else 'next_word'
+        url = url_for(page, config=config, fadeout=fadeout)
+        log_to_console('calling ' + url)
+        return redirect(url)
     else:
         return render_template('index.html')
 
@@ -22,6 +26,15 @@ def next_word(config, fadeout):
         configDict[int(nC)] = int(nS)
     genWord = make_word(SYLLABLES, configDict)
     return render_template('word.html', word=genWord, templateConfig=config, templateFadeout=fadeout);
+
+@app.route("/code/<config>/<fadeout>")
+def make_code(config, fadeout):
+    address = request.host_url + url_for('next_word', config=config, fadeout=fadeout)
+    img = qrcode.make(address)
+    img_io = io.BytesIO()
+    img.save(img_io, 'PNG', quality=60)
+    img_io.seek(0)
+    return send_file(img_io, mimetype='image/png')
 
 def make_word(syllables, config):
     selection = []
