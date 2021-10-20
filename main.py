@@ -11,32 +11,35 @@ def index():
     if request.method == 'POST':
         config = request.form['config']
         fadeout = float(request.form['fadeout'])*1000
+        capitalize = 'yes' if request.form.get('capitalize') else 'no'
         page = 'make_code' if request.form.get('qr') else 'next_word'
-        url = url_for(page, config=config, fadeout=fadeout)
+        url = url_for(page, config=config, fadeout=fadeout, capitalize=capitalize)
         log_to_console('calling ' + url)
         return redirect(url)
     else:
         return render_template('index.html')
 
+@app.route("/next/<config>")
 @app.route("/next/<config>/<fadeout>")
-def next_word(config, fadeout):
+@app.route("/next/<config>/<fadeout>/<capitalize>")
+def next_word(config, fadeout=0.0, capitalize='no'):
     configDict = {}
     for g in config.split('-'):
         nC,nS = g.split(':')
         configDict[int(nC)] = int(nS)
-    genWord = make_word(SYLLABLES, configDict)
-    return render_template('word.html', word=genWord, templateConfig=config, templateFadeout=fadeout);
+    genWord = make_word(SYLLABLES, configDict, capitalize)
+    return render_template('word.html', word=genWord, templateConfig=config, templateFadeout=fadeout, templateCapitalize=capitalize);
 
-@app.route("/code/<config>/<fadeout>")
-def make_code(config, fadeout):
-    address = request.host_url + url_for('next_word', config=config, fadeout=fadeout)
+@app.route("/code/<config>/<fadeout>/<capitalize>")
+def make_code(config, fadeout, capitalize):
+    address = request.host_url + url_for('next_word', config=config, fadeout=fadeout, capitalize=capitalize)
     img = qrcode.make(address)
     img_io = io.BytesIO()
     img.save(img_io, 'PNG', quality=60)
     img_io.seek(0)
     return send_file(img_io, mimetype='image/png')
 
-def make_word(syllables, config):
+def make_word(syllables, config, capitalize):
     selection = []
     for nC,nS in config.items():
         if nC in syllables:
@@ -44,7 +47,8 @@ def make_word(syllables, config):
             for i in range(nS):
                 selection.append(random.choice(s))
     random.shuffle(selection)
-    return ''.join(selection)
+    word = ''.join(selection)
+    return word if capitalize == 'no' else word.upper()
 
 def log_to_console(msg):
     print(msg, file=sys.stderr)

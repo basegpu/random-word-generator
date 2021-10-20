@@ -12,7 +12,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<form action="{{ url_for('next_word', config=templateConfig, fadeout=templateFadeout) }}">
+<form action="{{ url_for('next_word', config=templateConfig, fadeout=templateFadeout, capitalize=templateCapitalize) }}">
     <button id = "button">>></button>
 </form>
 <br>
