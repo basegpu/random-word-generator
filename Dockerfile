@@ -8,6 +8,7 @@ RUN pip3 install -r requirements.txt
 
 COPY syllables.csv /app
 COPY *.py /app
-COPY templates /app
+COPY templates /app/templates
+RUN ls
 
 CMD gunicorn -w 2 -b 0.0.0.0:$PORT "main:app"
