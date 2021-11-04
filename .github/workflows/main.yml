@@ -12,6 +12,16 @@ env:
   APP_NAME: ${{ 'syllable-shaker' }}
 
 jobs:
+
+  test:
+    name: Run unit Tests
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Test
+        run: |
+          echo --- Running test cases ---
+          docker-compose -f ./docker-compose.yml -p testing up --build --exit-code-from tests
+          echo --- Completed test cases ---
       
   deploy:
     name: Deploy to Heroku
