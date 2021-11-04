@@ -17,7 +17,7 @@ jobs:
     name: Run unit Tests
     runs-on: ubuntu-18.04
     steps:
-      - name: Test
+      - name: Testing
         run: |
           echo --- Running test cases ---
           docker-compose -f docker-compose.yml -p testing up --build --exit-code-from tests
@@ -26,7 +26,7 @@ jobs:
   deploy:
     name: Deploy to Heroku
     runs-on: ubuntu-18.04
-    if: success()
+    if: steps.Testing.outcome == 'success'
     steps:
 
     # Clone the repository
