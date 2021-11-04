@@ -26,6 +26,7 @@ jobs:
   deploy:
     name: Deploy to Heroku
     runs-on: ubuntu-18.04
+    if: success()
     steps:
 
     # Clone the repository
