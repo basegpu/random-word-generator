@@ -1,10 +1,15 @@
-version: '3'
+version: '3.4'
 services:
   app:
+    build:
+      context: .
+      target: runtime
     environment:
-    - PORT=8000
-    build: .
-    volumes:
-      - .:/app
+      - PORT=8000
     ports:
-      - "8000:8000"
+      - '8000:8000'
+
+  tests:
+    build:
+      context: .
+      target: test

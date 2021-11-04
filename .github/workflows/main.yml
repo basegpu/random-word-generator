@@ -28,6 +28,8 @@ jobs:
 
     # Push the Docker image to Heroku Container Registry
     - name: Publish
-      run: |
-        heroku container:push web -a $APP_NAME
-        heroku container:release web -a $APP_NAME
+      run: heroku container:push web -a $APP_NAME
+
+    # Create a release
+    - name: Release
+      run: heroku container:release web -a $APP_NAME
