@@ -11,7 +11,7 @@ COPY src/app/ app/
 FROM build AS test
 RUN pip3 install pytest
 COPY test/ test/
-CMD pytest test/*test*.py
+CMD pytest test/*test*.py -v --junitxml="testresults.xml"
 
 FROM build AS runtime
 COPY src/main.py .

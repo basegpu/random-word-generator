@@ -28,6 +28,12 @@ jobs:
         docker-compose -f docker-compose.yml -p testing up --build --exit-code-from tests
         echo --- Completed test cases ---
 
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: testresults.xml
+
     # Build Docker image
     - name: Docker build
       run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
