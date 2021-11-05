@@ -1,5 +1,9 @@
-def test_always_passes():
-    assert True
+import pytest
+from app import *
 
-def test_always_fails():
-    assert False
+def test_new_generator_fail():
+    with pytest.raises(TypeError):
+        WordGenerator()
+
+def test_new_generator_list():
+    gen = WordGenerator([])
