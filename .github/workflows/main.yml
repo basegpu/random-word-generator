@@ -13,25 +13,20 @@ env:
 
 jobs:
 
-  test:
-    name: Run unit Tests
-    runs-on: ubuntu-18.04
-    steps:
-      - name: Testing
-        run: |
-          echo --- Running test cases ---
-          docker-compose -f docker-compose.yml -p testing up --build --exit-code-from tests
-          echo --- Completed test cases ---
-      
   deploy:
-    name: Deploy to Heroku
+    name: Build, Test, and Deploy to Heroku
     runs-on: ubuntu-18.04
-    if: test.Testing.outcome == 'success'
     steps:
 
     # Clone the repository
     - name: Checkout
       uses: actions/checkout@v2
+
+    - name: Testing
+      run: |
+        echo --- Running test cases ---
+        docker-compose -f docker-compose.yml -p testing up --build --exit-code-from tests
+        echo --- Completed test cases ---
 
     # Build Docker image
     - name: Docker build
