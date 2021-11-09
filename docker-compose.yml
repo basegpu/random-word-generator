@@ -6,9 +6,9 @@ services:
       context: .
       target: runtime
     environment:
-      - PORT=$PORT
+      - PORT=8000
     ports:
-      - 8008:$PORT
+      - 8008:8000
 
   debug:
     build:
@@ -16,7 +16,6 @@ services:
       target: build
     stdin_open: true # docker run -i
     tty: true        # docker run -t
-    entrypoint: /bin/sh
 
   tests:
     build:

@@ -24,7 +24,6 @@ jobs:
 
     - name: Testing
       run: |
-        docker-compose config
         echo --- Running test cases ---
         docker-compose -f docker-compose.yml up --build --exit-code-from tests tests
         echo --- Completed test cases ---

@@ -8,6 +8,8 @@ RUN pip3 install -r requirements.txt
 
 COPY src/$APPNAME $APPNAME
 
+CMD /bin/bash
+
 FROM build AS test
 RUN pip3 install pytest
 COPY test/ test/
