@@ -1,5 +1,5 @@
 from flask import render_template
-from app import app
+from syllable_shaker import app
 
 @app.errorhandler(400)
 def internal_error(error):

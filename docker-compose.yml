@@ -1,17 +1,26 @@
 version: '3.4'
+
 services:
   app:
     build:
       context: .
       target: runtime
     environment:
-      - PORT=8000
+      - PORT=$PORT
     ports:
-      - '8000:8000'
+      - '8008:$PORT'
+
+  debug:
+    build:
+      context: .
+      target: build
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    entrypoint: /bin/sh
 
   tests:
     build:
       context: .
       target: test
     volumes:
-      - ./:/syllable-shaker
+      - ./test/output:/app/output

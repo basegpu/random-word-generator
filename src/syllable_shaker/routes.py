@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, send_file
 from werkzeug.exceptions import *
-from app import app, generator
+from syllable_shaker import app, generator
 from .utils import *
 
 @app.route("/" ,methods = ['POST', 'GET'])

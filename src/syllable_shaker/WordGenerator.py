@@ -8,6 +8,8 @@ class WordGenerator:
     _syllables = {}
 
     def __init__(self, syllableList):
+        if len(syllableList) == 0:
+            raise Exception('no list with syllables provided.')
         for syll in syllableList:
             n = len(syll)
             self._syllables.setdefault(n, []).append(syll)

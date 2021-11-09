@@ -1,17 +1,17 @@
 FROM python:3.10-slim-buster AS build
 
-RUN mkdir /syllable-shaker
-WORKDIR syllable-shaker
+RUN mkdir /app
+WORKDIR app
 
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
-COPY src/app/ app/
+COPY src/$APPNAME $APPNAME
 
 FROM build AS test
 RUN pip3 install pytest
 COPY test/ test/
-CMD pytest test/*test*.py -v --junitxml="testresults.xml"
+CMD pytest test/*test*.py -v --junitxml="output/testresults.xml"
 
 FROM build AS runtime
 COPY src/main.py .
