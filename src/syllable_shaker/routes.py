@@ -23,8 +23,7 @@ def index():
 @app.route("/next/<config>/<fadeout>/<capitalize>")
 def next_word(config, fadeout=0.0, capitalize='no'):
     try:
-        configDict = generator.DecodeConfig(config)
-        genWord = generator.MakeWord(configDict, capitalize)
+        genWord = generator.MakeWord(config, capitalize)
     except Exception as e:
         raise BadRequest(e)
     return render_template('word.html', word=genWord, templateConfig=config, templateFadeout=fadeout, templateCapitalize=capitalize);

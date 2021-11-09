@@ -5,18 +5,19 @@ from .utils import log_to_console
 
 class WordGenerator:
 
-    _syllables = {}
-
     def __init__(self, syllableList):
         if len(syllableList) == 0:
             raise Exception('no list with syllables provided.')
+        self._syllables = {}
         for syll in syllableList:
             n = len(syll)
             self._syllables.setdefault(n, []).append(syll)
         log_to_console(self._syllables)
     
-    @classmethod
-    def FromFile(cls, filename):
+    def FromList(syllableList):
+        return WordGenerator(syllableList)
+
+    def FromFile(filename):
         log_to_console('loading syllables from ' + filename)
         # open file in read mode
         with open(filename, 'r') as read_obj:
@@ -26,14 +27,17 @@ class WordGenerator:
             syllableList = []
             for row in csv_reader:
                 syllableList += row
-        return cls(syllableList)
+        return WordGenerator(syllableList)
 
-    @classmethod
-    def MakeWord(cls, configDict, capitalize):
+    def MakeWord(self, config, capitalize):
+        configDict = DecodeConfig(config)
+        return self.MakeWordFromConfig(configDict, capitalize)
+
+    def MakeWordFromConfig(self, configDict, capitalize):
         selection = []
         for nC,nS in configDict.items():
-            if nC in cls._syllables:
-                s = cls._syllables[nC]
+            if nC in self._syllables:
+                s = self._syllables[nC]
                 for i in range(nS):
                     selection.append(random.choice(s))
         random.shuffle(selection)
@@ -42,10 +46,10 @@ class WordGenerator:
             raise Exception('no success in word generation - reconfig!')
         return word if capitalize == 'no' else word.upper()
 
-    @staticmethod
-    def DecodeConfig(config):
-        configDict = {}
-        for g in config.split('-'):
-            nC,nS = g.split(':')
-            configDict[int(nC)] = int(nS)
-        return configDict
+
+def DecodeConfig(config):
+    configDict = {}
+    for g in config.split('-'):
+        nC,nS = g.split(':')
+        configDict[int(nC)] = int(nS)
+    return configDict
