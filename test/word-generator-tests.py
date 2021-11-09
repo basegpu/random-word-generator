@@ -12,3 +12,4 @@ def test_new_generator_empty():
 def test_new_generator_list():
     gen = WordGenerator(['a'])
     assert gen is not None
+    assert len(gen._syllables[1]) == 1
