@@ -32,8 +32,7 @@ class WordGenerator:
     def MakeWord(self, config, capitalize):
         configDict = DecodeConfig(config)
         code = self.MakeCodeFromConfig(configDict)
-        log_to_console('generated code for new word: ' + code)
-        return self.MakeWordFromCode(code, capitalize)
+        return (self.MakeWordFromCode(code, capitalize), code)
 
     def MakeCodeFromConfig(self, configDict):
         code = []

@@ -23,10 +23,20 @@ def index():
 @app.route("/next/<config>/<fadeout>/<capitalize>")
 def next_word(config, fadeout=0.0, capitalize='no'):
     try:
-        genWord = generator.MakeWord(config, capitalize)
+        genWord, genCode = generator.MakeWord(config, capitalize)
     except Exception as e:
         raise BadRequest(e)
-    return render_template('word.html', word=genWord, templateConfig=config, templateFadeout=fadeout, templateCapitalize=capitalize);
+    return render_template('word.html', templateCode=genCode, word=genWord, templateConfig=config, templateFadeout=fadeout, templateCapitalize=capitalize);
+
+@app.route("/repeat/<code>/<config>")
+@app.route("/repeat/<code>/<config>/<fadeout>")
+@app.route("/repeat/<code>/<config>/<fadeout>/<capitalize>")
+def same_word(code, config, fadeout=0.0, capitalize='no'):
+    try:
+        genWord = generator.MakeWordFromCode(code, capitalize)
+    except Exception as e:
+        raise BadRequest(e)
+    return render_template('word.html', templateCode=code, word=genWord, templateConfig=config, templateFadeout=fadeout, templateCapitalize=capitalize);
 
 @app.route("/code/<config>/<fadeout>/<capitalize>")
 def make_code(config, fadeout, capitalize):
