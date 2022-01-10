@@ -31,17 +31,25 @@ class WordGenerator:
 
     def MakeWord(self, config, capitalize):
         configDict = DecodeConfig(config)
-        return self.MakeWordFromConfig(configDict, capitalize)
+        code = self.MakeCodeFromConfig(configDict)
+        log_to_console('generated code for new word: ' + code)
+        return self.MakeWordFromCode(code, capitalize)
 
-    def MakeWordFromConfig(self, configDict, capitalize):
-        selection = []
+    def MakeCodeFromConfig(self, configDict):
+        code = []
         for nC,nS in configDict.items():
             if nC in self._syllables:
                 s = self._syllables[nC]
                 for i in range(nS):
-                    selection.append(random.choice(s))
-        random.shuffle(selection)
-        word = ''.join(selection)
+                    code.append('%i.%i'%(nC, random.randint(0, len(s)-1 )))
+        random.shuffle(code)
+        return '-'.join(code)
+
+    def MakeWordFromCode(self, code, capitalize):
+        word = ''
+        for s in code.split('-'):
+            nC, pos = s.split('.')
+            word += self._syllables[int(nC)][int(pos)]
         if len(word) == 0:
             raise Exception('no success in word generation - reconfig!')
         return word if capitalize == 'no' else word.upper()

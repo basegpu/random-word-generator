@@ -21,3 +21,14 @@ def test_new_generator_list(input_list, expected_size):
     gen = WordGenerator.FromList(input_list)
     assert gen is not None
     assert len(gen._syllables) == expected_size
+
+@pytest.mark.parametrize("input_code,expected_word",[
+    ('1.0', 's'),
+    ('3.1', 'wxy'),
+    ('3.0-1.1', 'tuvz'),
+    ('1.0-1.1-1.0', 'szs')
+    ])
+def test_word_from_code(input_code, expected_word):
+    gen = WordGenerator.FromList(['s', 'tuv', 'wxy', 'z'])
+    assert gen is not None
+    assert gen.MakeWordFromCode(input_code, 'no') == expected_word
