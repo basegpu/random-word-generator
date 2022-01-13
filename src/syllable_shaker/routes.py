@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, send_file
 from werkzeug.exceptions import *
 from syllable_shaker import app, generator
 from .utils import *
+from .ScoreManager import *
 
 @app.route("/" ,methods = ['POST', 'GET'])
 @app.route("/index", methods = ['POST', 'GET'])
@@ -12,7 +13,7 @@ def index():
         fadeout = float(request.form['fadeout'])*1000
         capitalize = 'yes' if request.form.get('capitalize') else 'no'
         page = 'make_code' if request.form.get('qr') else 'next_word'
-        url = url_for(page, config=config, score=0, fadeout=fadeout, capitalize=capitalize)
+        url = url_for(page, config=config, score='-1:0', fadeout=fadeout, capitalize=capitalize)
         log_to_console('starting session: ' + url)
         return redirect(url)
     else:
@@ -23,7 +24,8 @@ def index():
 @app.route("/next/<config>/<score>/<fadeout>/<capitalize>")
 def next_word(config, score, fadeout=0.0, capitalize='no'):
     try:
-        newScore = int(score) + 1
+        scores = ScoreManager(score)
+        scores.Succeeded()
         genWord, genCode = generator.MakeWord(config, capitalize)
     except Exception as e:
         raise BadRequest(e)
@@ -31,7 +33,7 @@ def next_word(config, score, fadeout=0.0, capitalize='no'):
         templateCode=genCode,
         word=genWord,
         templateConfig=config,
-        templateScore=newScore,
+        templateScore=scores.GetScore(),
         templateFadeout=fadeout,
         templateCapitalize=capitalize);
 
@@ -40,7 +42,8 @@ def next_word(config, score, fadeout=0.0, capitalize='no'):
 @app.route("/repeat/<code>/<config>/<score>/<fadeout>/<capitalize>")
 def same_word(code, config, score, fadeout=0.0, capitalize='no'):
     try:
-        newScore = int(score) - 1
+        scores = ScoreManager(score)
+        scores.Failed()
         genWord = generator.MakeWordFromCode(code, capitalize)
     except Exception as e:
         raise BadRequest(e)
@@ -48,7 +51,7 @@ def same_word(code, config, score, fadeout=0.0, capitalize='no'):
         templateCode=code,
         word=genWord,
         templateConfig=config,
-        templateScore=newScore,
+        templateScore=scores.GetScore(),
         templateFadeout=fadeout,
         templateCapitalize=capitalize);
 

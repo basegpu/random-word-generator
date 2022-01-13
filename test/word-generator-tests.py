@@ -1,5 +1,5 @@
 import pytest
-from syllable_shaker import WordGenerator
+from syllable_shaker.WordGenerator import *
 
 def test_new_generator_fail():
     with pytest.raises(TypeError):

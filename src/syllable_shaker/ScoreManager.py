@@ -2,7 +2,7 @@ from .utils import log_to_console
 
 class ScoreManager:
 
-    _sep = '-'    
+    _sep = ':'    
 
     def __init__(self, score):
         comp = score.split(self._sep)
