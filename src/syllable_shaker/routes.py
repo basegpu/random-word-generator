@@ -13,7 +13,7 @@ def index():
         fadeout = float(request.form['fadeout'])*1000
         capitalize = 'yes' if request.form.get('capitalize') else 'no'
         page = 'make_code' if request.form.get('qr') else 'next_word'
-        url = url_for(page, config=config, score='-1:0', fadeout=fadeout, capitalize=capitalize)
+        url = url_for(page, config=config, score='0:-1', fadeout=fadeout, capitalize=capitalize)
         log_to_console('starting session: ' + url)
         return redirect(url)
     else:

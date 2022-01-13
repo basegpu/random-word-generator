@@ -49,5 +49,5 @@ def test_full_journey():
     manager.Failed()
     manager.Succeeded()
     manager.Succeeded()
-    assert manager.Success == 5
-    assert manager.Fails == 2
+    assert manager.Success == 3
+    assert manager.Fails == 4

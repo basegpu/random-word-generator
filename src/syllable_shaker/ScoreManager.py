@@ -14,11 +14,11 @@ class ScoreManager:
                 s.append(int(c))
             except:
                 raise Exception('bad score format - must all be integers.')
-        self.Success = s[0]
-        self.Fails = s[1]
+        self.Fails = s[0]
+        self.Success = s[1]
 
     def GetScore(self):
-        return "%i%c%i"%(self.Success, self._sep, self.Fails)
+        return "%i%c%i"%(self.Fails, self._sep, self.Success)
 
     def Succeeded(self):
         self.Success += 1
