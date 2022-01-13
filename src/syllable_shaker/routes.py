@@ -12,31 +12,45 @@ def index():
         fadeout = float(request.form['fadeout'])*1000
         capitalize = 'yes' if request.form.get('capitalize') else 'no'
         page = 'make_code' if request.form.get('qr') else 'next_word'
-        url = url_for(page, config=config, fadeout=fadeout, capitalize=capitalize)
+        url = url_for(page, config=config, score=0, fadeout=fadeout, capitalize=capitalize)
         log_to_console('starting session: ' + url)
         return redirect(url)
     else:
         return render_template('index.html')
 
-@app.route("/next/<config>")
-@app.route("/next/<config>/<fadeout>")
-@app.route("/next/<config>/<fadeout>/<capitalize>")
-def next_word(config, fadeout=0.0, capitalize='no'):
+@app.route("/next/<config>/<score>")
+@app.route("/next/<config>/<score>/<fadeout>")
+@app.route("/next/<config>/<score>/<fadeout>/<capitalize>")
+def next_word(config, score, fadeout=0.0, capitalize='no'):
     try:
+        newScore = int(score) + 1
         genWord, genCode = generator.MakeWord(config, capitalize)
     except Exception as e:
         raise BadRequest(e)
-    return render_template('word.html', templateCode=genCode, word=genWord, templateConfig=config, templateFadeout=fadeout, templateCapitalize=capitalize);
+    return render_template('word.html',
+        templateCode=genCode,
+        word=genWord,
+        templateConfig=config,
+        templateScore=newScore,
+        templateFadeout=fadeout,
+        templateCapitalize=capitalize);
 
-@app.route("/repeat/<code>/<config>")
-@app.route("/repeat/<code>/<config>/<fadeout>")
-@app.route("/repeat/<code>/<config>/<fadeout>/<capitalize>")
-def same_word(code, config, fadeout=0.0, capitalize='no'):
+@app.route("/repeat/<code>/<config>/<score>")
+@app.route("/repeat/<code>/<config>/<score>/<fadeout>")
+@app.route("/repeat/<code>/<config>/<score>/<fadeout>/<capitalize>")
+def same_word(code, config, score, fadeout=0.0, capitalize='no'):
     try:
+        newScore = int(score) - 1
         genWord = generator.MakeWordFromCode(code, capitalize)
     except Exception as e:
         raise BadRequest(e)
-    return render_template('word.html', templateCode=code, word=genWord, templateConfig=config, templateFadeout=fadeout, templateCapitalize=capitalize);
+    return render_template('word.html',
+        templateCode=code,
+        word=genWord,
+        templateConfig=config,
+        templateScore=newScore,
+        templateFadeout=fadeout,
+        templateCapitalize=capitalize);
 
 @app.route("/code/<config>/<fadeout>/<capitalize>")
 def make_code(config, fadeout, capitalize):
