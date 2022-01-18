@@ -55,8 +55,8 @@ def same_word(code, config, score, fadeout=0.0, capitalize='no'):
         templateFadeout=fadeout,
         templateCapitalize=capitalize);
 
-@app.route("/code/<config>/<fadeout>/<capitalize>")
-def make_code(config, fadeout, capitalize):
-    address = request.host_url + url_for('next_word', config=config, fadeout=fadeout, capitalize=capitalize)
+@app.route("/code/<config>/<score>/<fadeout>/<capitalize>")
+def make_code(config, score, fadeout, capitalize):
+    address = request.host_url + url_for('next_word', config=config, score=score, fadeout=fadeout, capitalize=capitalize)
     img_io = make_qr_code(address)
     return send_file(img_io, mimetype='image/png')
