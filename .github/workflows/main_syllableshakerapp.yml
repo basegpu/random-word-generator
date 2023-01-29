@@ -71,3 +71,4 @@ jobs:
           app-name: 'SyllableShakerApp'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A0CD7E266C4F4712A60061676CE4E4CB }}
+          startup-command: gunicorn -w 2 "src/main:app"
