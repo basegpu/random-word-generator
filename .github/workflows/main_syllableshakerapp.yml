@@ -4,6 +4,10 @@
 
 name: Build and deploy Python app to Azure Web App - SyllableShakerApp
 
+env:
+  AZURE_WEBAPP_NAME: 'SyllableShakerApp'
+  AZURE_WEBAPP_PACKAGE_PATH: 'src'
+
 on:
   push:
     branches:
@@ -68,7 +72,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'SyllableShakerApp'
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A0CD7E266C4F4712A60061676CE4E4CB }}
-          startup-command: gunicorn -w 2 "src/main:app"
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
